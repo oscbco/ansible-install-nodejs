@@ -1,0 +1,26 @@
+- name: SYSTEM NODE Import the NodeSource GPG key into apt
+  apt_key: url=https://deb.nodesource.com/gpgkey/nodesource.gpg.key state=present
+
+- name: SYSTEM NODE Add NodeSource deb repository
+  apt_repository:
+    repo: 'deb https://deb.nodesource.com/node_{{ debian_repo_version }} {{ ansible_distribution_release }} main'
+    state: present
+
+- name: SYSTEM NODE Add NodeSource deb-src repository
+  apt_repository:
+    repo: 'deb-src https://deb.nodesource.com/node_{{ debian_repo_version }} {{ ansible_distribution_release }} main'
+    state: present
+
+- name: SYSTEM NODE nodejs must be installed from nodesource
+  apt: pkg=nodejs state=present update_cache='yes'
+
+- name: SYSTEM NODE Get Node.js version
+  command: /usr/bin/nodejs --version
+  register: nodejsversion
+  changed_when: "'v0' in nodejsversion.stdout"
+
+- name: SYSTEM NODE Node.js version
+  debug: var=nodejsversion.stdout
+
+- name: SYSTEM NODE Install PM2 Globally
+  npm: name=pm2 global=yes
