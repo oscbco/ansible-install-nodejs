@@ -1,8 +1,2 @@
 ---
-ansible_user: "{{ useradmin }}"
-ansible_become: yes
-become_method: sudo
-become_user: root
-
-# vars file for nodejs
-debian_repo_version: "6.x"
+# vars file for ansible-install-nodejs
